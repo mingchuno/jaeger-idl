@@ -3,6 +3,8 @@ name: Tests
 on:
   push:
     branches: [main]
+    tags:
+      - v*
 
   pull_request:
     branches: [main]
@@ -24,3 +26,11 @@ jobs:
         with:
           name: build-results
           path: proto-gen-*/
+      - name: Upload to release
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: proto-gen-*/**/*
+          tags: false
+          draft: true
